@@ -1,0 +1,629 @@
+
+/* 1. VARIABLES: change colours here only */
+:root {
+  /* Brand */
+  --primary: #0f8a5f;
+  --primary-dark: #0b6e4c;
+  --primary-rgb: 15, 138, 95;
+  --accent: #facc15;
+  --accent-rgb: 250, 204, 21;
+  --grad-brand: linear-gradient(135deg, #17c08b, #0f8a5f);
+
+  /* Backgrounds */
+  --bg: #07130e;
+  --bg-rgb: 7, 19, 14;
+  --surface: #0b1f17;
+  --surface-rgb: 11, 31, 23;
+  --card: #0f241b;
+  --input-bg: #08170f;
+  --sidebar-bg: linear-gradient(180deg, #0d2b1f, #08170f);
+
+  /* Borders */
+  --border: #1d3a2d;
+  --input-border: #24453a;
+
+  /* Text */
+  --text: #e6f4ee;
+  --muted: #8fb3a3;
+  --muted-dark: #5f8272;
+  --placeholder: #6f9484;
+  --link: #34d399;
+  --link-hover: #6ee7b7;
+
+  /* Holiday */
+  --holiday: #ff5a6b;
+  --holiday-rgb: 220, 53, 69;
+
+  /* Plan colours */
+  --plan-weekly: #5b8fc7;
+  --plan-monthly: #1fb383;
+  --plan-custom: #d4a72c;
+
+  /* Shape, layout, fonts */
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 16px;
+  --sidebar-width: 260px;
+  --sidebar-mini: 64px;
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+
+/* 2. BOOTSTRAP BRIDGE: connect our variables to Bootstrap */
+:root,
+[data-bs-theme] {
+  --bs-primary: var(--primary);
+  --bs-primary-rgb: var(--primary-rgb);
+  --bs-link-color: var(--link);
+  --bs-link-hover-color: var(--link-hover);
+  --bs-body-bg: var(--bg);
+  --bs-body-bg-rgb: var(--bg-rgb);
+  --bs-tertiary-bg: var(--surface);
+  --bs-tertiary-bg-rgb: var(--surface-rgb);
+  --bs-border-color: var(--border);
+  --bs-body-color: var(--text);
+  --bs-secondary-color: var(--muted);
+}
+
+
+/* 3. BASE */
+body {
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  background-image:
+    radial-gradient(900px 500px at 90% -10%, rgba(var(--primary-rgb), .20), transparent 60%),
+    radial-gradient(700px 420px at -5% 105%, rgba(var(--accent-rgb), .07), transparent 60%),
+    linear-gradient(rgba(255, 255, 255, .025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, .025) 1px, transparent 1px);
+  background-size: auto, auto, 44px 44px, 44px 44px;
+  background-attachment: fixed;
+}
+
+h1, h2, h3, h4, h5, h6,
+.navbar-brand {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  letter-spacing: .3px;
+}
+
+h2 .text-primary {
+  background: linear-gradient(90deg, #34d399, var(--accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+}
+
+.text-accent { color: var(--accent); }
+.border-primary { border-color: var(--primary) !important; }
+
+
+/* 4. COMPONENTS (used on every page) */
+.card {
+  --bs-card-bg: var(--card);
+  --bs-card-border-color: var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, .45);
+}
+
+.btn {
+  font-weight: 600;
+  letter-spacing: .3px;
+  border-radius: var(--radius-sm);
+  padding: 10px 16px;
+}
+
+.btn-primary {
+  --bs-btn-bg: var(--primary);
+  --bs-btn-border-color: var(--primary);
+  --bs-btn-hover-bg: var(--primary-dark);
+  --bs-btn-hover-border-color: var(--primary-dark);
+  --bs-btn-active-bg: var(--primary-dark);
+  --bs-btn-active-border-color: var(--primary-dark);
+}
+
+.nav-pills {
+  --bs-nav-pills-link-active-bg: var(--primary);
+  --bs-nav-link-color: var(--muted);
+  --bs-nav-link-hover-color: #fff;
+}
+
+.nav-pills .nav-link {
+  border-radius: var(--radius-sm);
+  font-weight: 500;
+}
+
+.form-control,
+.form-select {
+  background-color: var(--input-bg);
+  border-color: var(--input-border);
+  color: var(--text);
+  border-radius: var(--radius-sm);
+  padding: 11px 14px;
+}
+
+.form-control::placeholder { color: var(--placeholder); }
+
+.form-control:focus,
+.form-select:focus {
+  background-color: var(--input-bg);
+  color: #fff;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(var(--primary-rgb), .25);
+}
+
+.table {
+  --bs-table-bg: transparent;
+  --bs-table-border-color: var(--border);
+}
+
+
+/* 5. SIDEBAR (after login) */
+.app-main { min-width: 0; }
+
+.sidebar-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 20px 16px;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--border);
+}
+
+/* Brand */
+.brand-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-text { line-height: 1.5; }
+
+.brand-sub {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 4px;
+  color: var(--accent);
+}
+
+.brand-name {
+  font-family: var(--font-heading);
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #fff;
+}
+
+.sidebar-toggle::before {
+  content: "«";
+  font-size: 16px;
+  line-height: 1;
+}
+
+/* Links */
+.sidebar-label {
+  margin: 18px 0 6px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: var(--muted-dark);
+}
+
+.sidebar-links .nav-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 11px 14px;
+  border-radius: 12px;
+  color: var(--muted);
+  transition: all .2s ease;
+}
+
+.sidebar-links .nav-link i {
+  width: 22px;
+  font-size: 18px;
+  text-align: center;
+}
+
+.sidebar-links .nav-link:hover {
+  background: rgba(255, 255, 255, .05);
+  color: #fff;
+  transform: translateX(3px);
+}
+
+.sidebar-links .nav-link.active {
+  background: var(--grad-brand);
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(var(--primary-rgb), .4);
+}
+
+.sidebar-links .nav-link.logout:hover {
+  background: rgba(var(--holiday-rgb), .15);
+  color: var(--holiday);
+}
+
+/* Player card at the bottom */
+.sidebar-user {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, .03);
+}
+
+.user-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sidebar-user img,
+.avatar-fallback {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatar-fallback {
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  background: var(--grad-brand);
+}
+
+.user-name { font-size: 14px; font-weight: 600; line-height: 1.2; }
+.user-role { font-size: 12px; color: var(--muted); }
+
+.user-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+.user-stats div + div { border-left: 1px solid var(--border); }
+
+.user-stats strong {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 18px;
+  line-height: 1.2;
+  color: #fff;
+}
+
+.user-stats span {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+
+/* 6. DASHBOARD (year calendar) */
+.cal-month {
+  background: var(--surface);
+  border-radius: var(--radius-md);
+}
+
+.cal-table th {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted-dark);
+  padding-bottom: 8px;
+}
+
+.cal-table td {
+  padding: 3px 0;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.cal-day {
+  display: inline-block;
+  min-width: 34px;
+  padding: 4px 0;
+  border-radius: 8px;
+}
+
+.cal-holiday {
+  background: rgba(var(--holiday-rgb), .22);
+  color: var(--holiday);
+  font-weight: 600;
+}
+
+.cal-today {
+  background: var(--primary);
+  color: #fff;
+  font-weight: 700;
+  border-radius: 50%;
+  min-width: 32px;
+  height: 32px;
+  line-height: 32px;
+  padding: 0;
+}
+
+
+/* 7. PLANS PAGE */
+.plan-weekly  { --plan-accent: var(--plan-weekly); }
+.plan-monthly { --plan-accent: var(--plan-monthly); }
+.plan-custom  { --plan-accent: var(--plan-custom); --plan-btn-text: #1a1405; }
+
+.plan-card {
+  --plan-btn-text: #fff;
+  position: relative;
+  border: 1px solid var(--plan-accent);
+  background-image: linear-gradient(160deg,
+    color-mix(in srgb, var(--plan-accent) 16%, var(--bg)),
+    color-mix(in srgb, var(--plan-accent) 4%, var(--bg)));
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.plan-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, .55);
+}
+
+.plan-card h4,
+.plan-price { color: var(--plan-accent); }
+
+.plan-price { font-size: 38px; font-weight: 700; }
+
+.plan-features li {
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, .06);
+  color: var(--text);
+}
+
+.plan-features li::before {
+  content: "✓";
+  margin-right: 10px;
+  font-weight: 700;
+  color: var(--plan-accent);
+}
+
+.plan-badge,
+.plan-ribbon {
+  background: var(--plan-accent);
+  color: var(--plan-btn-text);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  border-radius: 20px;
+}
+
+.plan-badge { padding: 4px 10px; }
+
+.plan-ribbon {
+  position: absolute;
+  top: -12px;
+  left: 24px;
+  padding: 4px 12px;
+}
+
+.plan-btn {
+  --bs-btn-bg: var(--plan-accent);
+  --bs-btn-border-color: var(--plan-accent);
+  --bs-btn-color: var(--plan-btn-text);
+  --bs-btn-hover-bg: var(--plan-accent);
+  --bs-btn-hover-border-color: var(--plan-accent);
+  --bs-btn-hover-color: var(--plan-btn-text);
+  --bs-btn-active-bg: var(--plan-accent);
+  --bs-btn-active-border-color: var(--plan-accent);
+  --bs-btn-active-color: var(--plan-btn-text);
+}
+
+.plan-btn:hover { filter: brightness(1.1); }
+
+
+/* 8. BOOKING PAGE (game, time, calendar tiles, summary) */
+.choice-card {
+  flex: 1;
+  padding: 14px 16px;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text);
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: var(--radius-sm);
+  transition: all .2s ease;
+}
+
+.choice-card small {
+  display: block;
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.choice-card.active {
+  border-color: var(--primary);
+  background: rgba(var(--primary-rgb), .15);
+  box-shadow: 0 0 0 1px var(--primary) inset;
+}
+
+.cal-head,
+.tile-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.cal-head {
+  margin-bottom: 8px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--muted-dark);
+}
+
+.tile {
+  min-height: 62px;
+  padding: 6px 2px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(var(--primary-rgb), .18);
+  border: 1px solid rgba(var(--primary-rgb), .35);
+  border-radius: var(--radius-sm);
+  transition: transform .15s ease, background .15s ease;
+}
+
+.tile:hover:not(:disabled) {
+  transform: translateY(-2px);
+  background: rgba(var(--primary-rgb), .32);
+}
+
+.tile:disabled { cursor: not-allowed; }
+
+.tile-note {
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.1;
+  text-align: center;
+}
+
+.tile-past {
+  opacity: .3;
+  background: transparent;
+  border-color: var(--border);
+}
+
+.tile-holiday {
+  color: var(--holiday);
+  background: rgba(var(--holiday-rgb), .12);
+  border-color: rgba(var(--holiday-rgb), .35);
+}
+
+.tile-booked {
+  color: var(--muted-dark);
+  background: rgba(255, 255, 255, .05);
+  border-color: var(--border);
+}
+
+.tile-selected {
+  background: var(--grad-brand);
+  border-color: transparent;
+  box-shadow: 0 6px 18px rgba(var(--primary-rgb), .45);
+}
+
+.tile-selected.tile-warn {
+  color: var(--accent);
+  background: rgba(var(--accent-rgb), .18);
+  border-color: var(--accent);
+  box-shadow: none;
+}
+
+.summary-item {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.sticky-card {
+  position: sticky;
+  top: 20px;
+}
+
+
+/* 9. PAYMENT AND STATUS PAGES */
+.status-card { max-width: 440px; }
+
+.status-icon {
+  width: 80px;
+  height: 80px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 36px;
+  color: var(--link);
+  background: rgba(var(--primary-rgb), .2);
+}
+
+.status-icon-bad {
+  color: var(--holiday);
+  background: rgba(var(--holiday-rgb), .2);
+}
+
+.pay-spinner {
+  width: 64px;
+  height: 64px;
+  border-width: 5px;
+  color: var(--primary);
+}
+
+
+/* 10. MY BOOKINGS */
+.booking-card {
+  border-left: 4px solid var(--plan-accent);
+  overflow: hidden;
+}
+
+.booking-head { cursor: pointer; }
+.booking-head:hover { background: rgba(255, 255, 255, .03); }
+
+.booking-no {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--plan-accent);
+}
+
+.booking-stat small {
+  display: block;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.booking-stat strong { font-size: 15px; }
+
+
+/* 11. RESPONSIVE (media queries, always last) */
+
+/* Desktop: sticky sidebar that collapses to an icon-only strip */
+@media (min-width: 992px) {
+  .app-sidebar {
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
+    flex-shrink: 0;
+    width: var(--sidebar-width);
+    height: 100vh;
+    overflow: hidden;
+    transition: width .25s ease;
+  }
+
+  .sidebar-inner { width: var(--sidebar-width); }
+
+  .sidebar-collapsed .app-sidebar,
+  .sidebar-collapsed .sidebar-inner { width: var(--sidebar-mini); }
+
+  .sidebar-collapsed .sidebar-inner { padding: 20px 10px; }
+
+  .sidebar-collapsed .brand-wrap,
+  .sidebar-collapsed .link-text,
+  .sidebar-collapsed .sidebar-label,
+  .sidebar-collapsed .user-text,
+  .sidebar-collapsed .user-stats { display: none; }
+
+  .sidebar-collapsed .sidebar-header { justify-content: center !important; }
+
+  .sidebar-collapsed .sidebar-links .nav-link {
+    justify-content: center;
+    padding: 11px 0;
+  }
+
+  .sidebar-collapsed .sidebar-user {
+    padding: 8px 0;
+    border: 0;
+    background: none;
+  }
+
+  .sidebar-collapsed .user-top { justify-content: center; }
+
+  .sidebar-collapsed .sidebar-toggle::before { content: "»"; }
+}

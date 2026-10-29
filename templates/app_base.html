@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block theme %}dark{% endblock %}
+
+{% block body %}
+<!-- Phones only -->
+<nav class="navbar bg-body-tertiary d-lg-none px-3">
+  <span class="navbar-brand fw-bold">Badminton Arena</span>
+  <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-label="Open menu">
+    <i class="bi bi-list"></i>
+  </button>
+</nav>
+
+<div class="app-layout d-flex">
+
+  <aside class="offcanvas-lg offcanvas-start app-sidebar" id="sidebar">
+    <div class="sidebar-inner">
+
+      <div class="sidebar-header d-flex justify-content-between align-items-center">
+        <div class="brand-wrap">
+          <div class="brand-text d-flex flex-column">
+            <span class="brand-sub">BADMINTON</span>
+            <span class="brand-name">ARENA</span>
+          </div>
+        </div>
+        <button class="sidebar-toggle btn btn-outline-secondary btn-sm d-none d-lg-inline-block" id="sidebarToggle" aria-label="Toggle sidebar"></button>
+        <button class="btn-close d-lg-none" data-bs-dismiss="offcanvas" data-bs-target="#sidebar" aria-label="Close"></button>
+      </div>
+
+      <div class="sidebar-links nav nav-pills flex-column gap-1 mt-4">
+        <span class="sidebar-label">MENU</span>
+        <a class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}" href="{% url 'dashboard' %}">
+          <i class="bi bi-grid-1x2-fill"></i><span class="link-text">Dashboard</span>
+        </a>
+
+        <span class="sidebar-label">BOOKINGS</span>
+        <a class="nav-link {% if request.resolver_match.url_name == 'plans' %}active{% endif %}" href="{% url 'plans' %}">
+          <i class="bi bi-calendar2-plus-fill"></i><span class="link-text">Book a Court</span>
+        </a>
+        <a class="nav-link {% if request.resolver_match.url_name == 'my_bookings' %}active{% endif %}" href="{% url 'my_bookings' %}">
+          <i class="bi bi-calendar-check-fill"></i><span class="link-text">My Bookings</span>
+        </a>
+
+        <span class="sidebar-label">ACCOUNT</span>
+        <a class="nav-link logout" href="{% url 'logout' %}">
+          <i class="bi bi-box-arrow-right"></i><span class="link-text">Logout</span>
+        </a>
+      </div>
+
+      <div class="sidebar-user">
+        <div class="user-top">
+          {% if user.profile_image %}
+            <img src="{{ user.profile_image.url }}" alt="">
+          {% else %}
+            <div class="avatar-fallback">{{ user.first_name|default:user.username|slice:":1"|upper }}</div>
+          {% endif %}
+          <div class="user-text">
+            <div class="user-name">{{ user.first_name|default:user.username }}</div>
+            <div class="user-role">Player</div>
+          </div>
+        </div>
+
+        <div class="user-stats">
+          <div><strong>{{ side_stats.bookings|default:0 }}</strong><span>Bookings</span></div>
+          <div><strong>{{ side_stats.upcoming|default:0 }}</strong><span>Upcoming</span></div>
+          <div><strong>{{ side_stats.completed|default:0 }}</strong><span>Completed</span></div>
+        </div>
+      </div>
+
+    </div>
+  </aside>
+
+  <main class="app-main flex-grow-1 p-4">
+    {% for m in messages %}
+      <div class="alert alert-info">{{ m }}</div>
+    {% endfor %}
+    {% block content %}{% endblock %}
+  </main>
+
+</div>
+
+<script>
+  (function () {
+    var body = document.body;
+    var btn = document.getElementById('sidebarToggle');
+
+    try {
+      if (localStorage.getItem('sidebarCollapsed') === '1') body.classList.add('sidebar-collapsed');
+    } catch (e) {}
+
+    btn.addEventListener('click', function () {
+      body.classList.toggle('sidebar-collapsed');
+      try {
+        localStorage.setItem('sidebarCollapsed', body.classList.contains('sidebar-collapsed') ? '1' : '0');
+      } catch (e) {}
+    });
+  })();
+</script>
+{% endblock %}

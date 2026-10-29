@@ -1,0 +1,17 @@
+{% extends 'app_base.html' %}
+
+{% block title %}Payment Successful | Badminton Arena{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center pt-5">
+  <div class="card status-card text-center w-100">
+    <div class="card-body p-5">
+      <div class="status-icon mx-auto mb-4"><i class="bi bi-check-lg"></i></div>
+      <h3 class="mb-2">Payment Successful</h3>
+      <p class="text-secondary mb-4">Your court booking has been confirmed.</p>
+      <a href="{% url 'my_bookings' %}" class="btn btn-primary w-100 mb-2">View My Bookings</a>
+      <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary w-100">Go to Dashboard</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'app_base.html' %}
+{% load static %}
+
+{% block title %}Processing Payment | Badminton Arena{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-center pt-5">
+  <div class="card status-card text-center w-100">
+    <div class="card-body p-5">
+
+      <!-- 1. Processing -->
+      <div id="payLoading">
+        <div class="spinner-border pay-spinner mb-4" role="status"></div>
+        <h3 class="mb-2">Processing Payment</h3>
+        <p class="text-secondary mb-0">Please do not refresh</p>
+      </div>
+
+      <!-- 2. Test payment card -->
+      <div id="payGateway" class="d-none">
+        <span class="badge text-bg-warning mb-3">TEST MODE · no real money</span>
+        <h3 class="mb-1">Pay ₹{{ amount }}</h3>
+        <p class="text-secondary mb-4">{{ description }}</p>
+
+        <form method="post" action="{% url 'payment_confirm' booking.pk %}">
+          {% csrf_token %}
+          <button class="btn btn-primary w-100 mb-2" type="submit">Pay ₹{{ amount }} (Success)</button>
+        </form>
+        <button type="button" class="btn btn-outline-danger w-100" id="failBtn">Cancel Payment</button>
+      </div>
+
+      <!-- 3. Failed -->
+      <div id="payFailed" class="d-none">
+        <div class="status-icon status-icon-bad mx-auto mb-4"><i class="bi bi-x-lg"></i></div>
+        <h3 class="mb-2">Payment not completed</h3>
+        <p class="text-secondary mb-4">The payment failed. Your slots are held for 10 minutes.</p>
+        <button type="button" class="btn btn-primary w-100 mb-2" id="retryBtn">Try again</button>
+        <a href="{% url 'plans' %}" class="btn btn-outline-secondary w-100">Back to plans</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/payment.js' %}"></script>
+{% endblock %}

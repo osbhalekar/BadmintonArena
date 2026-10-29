@@ -1,0 +1,100 @@
+{% extends 'app_base.html' %}
+
+{% block title %}My Bookings | Badminton Arena{% endblock %}
+
+{% block content %}
+<h2 class="fw-bold">My Bookings</h2>
+<p class="text-secondary mb-4">Each card is one booking. Click a card to see its days. Cancelling is open for 24 hours after booking.</p>
+
+{% for b in bookings %}
+<div class="card booking-card plan-{{ b.plan.plan_type }} mb-3">
+
+  <div class="booking-head p-4" data-bs-toggle="collapse" data-bs-target="#booking-{{ b.pk }}" role="button">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+
+      <div>
+        <span class="booking-no">BOOKING #{{ b.pk }}</span>
+        <h5 class="mb-1 mt-1">{{ b.plan.name }} plan · {{ b.get_players_display }}</h5>
+        <small class="text-secondary">Booked on {{ b.created_at|date:"j M Y, g:i A" }}</small>
+      </div>
+
+      <div class="d-flex flex-wrap gap-4">
+        {% with first=b.slots.all.0 %}
+        <div class="booking-stat">
+          <small>Time</small>
+          <strong>{{ first.start_time|time:"g:i A" }} – {{ first.end_time|time:"g:i A" }}</strong>
+        </div>
+        {% endwith %}
+        <div class="booking-stat">
+          <small>Days</small>
+          <strong>{{ b.active_days }} of {{ b.slots.all|length }} active</strong>
+        </div>
+        <div class="booking-stat">
+          <small>Total</small>
+          <strong>₹{{ b.total_price }}</strong>
+        </div>
+      </div>
+
+    </div>
+    <div class="mt-2">
+      {% if b.can_cancel %}
+        <small class="text-warning">Cancel open until {{ b.cancel_deadline|date:"j M, g:i A" }}</small>
+      {% else %}
+        <small class="text-secondary">Cancellation window closed</small>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="collapse {% if forloop.first %}show{% endif %}" id="booking-{{ b.pk }}">
+    <div class="table-responsive border-top">
+      <table class="table align-middle mb-0">
+        <thead>
+          <tr class="text-secondary small">
+            <th class="ps-4">Date</th>
+            <th>Time</th>
+            <th>Price</th>
+            <th>Status</th>
+            <th class="pe-4"></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for slot in b.slots.all %}
+          <tr>
+            <td class="ps-4">
+              {{ slot.date|date:"D, j M Y" }}
+              {% if slot.status == 'shifted' %}
+                <div class="small text-secondary">moved from {{ slot.original_date|date:"j M" }}</div>
+              {% endif %}
+            </td>
+            <td>{{ slot.start_time|time:"g:i A" }} – {{ slot.end_time|time:"g:i A" }}</td>
+            <td>{% if slot.status == 'cancelled' %}<s class="text-secondary">₹{{ slot.price }}</s>{% else %}₹{{ slot.price }}{% endif %}</td>
+            <td>
+              {% if slot.status == 'active' %}<span class="badge bg-success-subtle text-success-emphasis">Booked</span>
+              {% elif slot.status == 'shifted' %}<span class="badge bg-warning-subtle text-warning-emphasis">Holiday shifted</span>
+              {% else %}<span class="badge bg-danger-subtle text-danger-emphasis">Cancelled</span>{% endif %}
+            </td>
+            <td class="pe-4 text-end">
+              {% if slot.can_cancel %}
+              <form method="post" action="{% url 'cancel_slot' slot.pk %}" onsubmit="return confirm('Cancel this day? It will be removed from your total.');">
+                {% csrf_token %}
+                <button class="btn btn-outline-danger btn-sm">Cancel</button>
+              </form>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+{% empty %}
+<div class="card">
+  <div class="card-body p-5 text-center">
+    <p class="text-secondary mb-3">You have no bookings yet.</p>
+    <a href="{% url 'plans' %}" class="btn btn-primary">Book a Court</a>
+  </div>
+</div>
+{% endfor %}
+{% endblock %}

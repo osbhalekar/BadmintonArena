@@ -1,0 +1,67 @@
+{% extends 'app_base.html' %}
+
+{% block title %}Dashboard | Badminton Arena{% endblock %}
+
+{% block content %}
+<h2 class="fw-bold">Welcome, <span class="text-primary">{{ user.first_name }}</span></h2>
+<p class="text-secondary">Manage your court bookings</p>
+
+<div class="card mb-4">
+  <div class="card-body d-flex flex-column flex-md-row align-items-md-center gap-3">
+    {% if user.profile_image %}
+      <img src="{{ user.profile_image.url }}" class="rounded-circle border border-primary border-3" width="90" height="90" style="object-fit: cover;" alt="Profile">
+    {% else %}
+      <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center fs-2" style="width:90px;height:90px;">{{ user.first_name|slice:":1" }}</div>
+    {% endif %}
+    <div class="flex-grow-1">
+      <h4 class="mb-0">{{ user.first_name }}</h4>
+      <small class="text-secondary">Age {{ user.age }}</small><br>
+      <span class="badge text-bg-secondary mt-2">No Active Plan</span>
+    </div>
+    <a href="{% url 'plans' %}" class="btn btn-primary">Book a Court</a>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-6 col-lg-3"><div class="card"><div class="card-body"><small class="text-secondary">Total Slots</small><h2>{{stats.total}}</h2></div></div></div>
+  <div class="col-6 col-lg-3"><div class="card"><div class="card-body"><small class="text-secondary">Active Slots</small><h2 class="text-success">{{stats.active}}</h2></div></div></div>
+  <div class="col-6 col-lg-3"><div class="card"><div class="card-body"><small class="text-secondary">Holiday Shifted</small><h2 class="text-warning">{{stats.shifted}}</h2></div></div></div>
+  <div class="col-6 col-lg-3"><div class="card"><div class="card-body"><small class="text-secondary">Cancelled</small><h2 class="text-danger">{{stats.cancelled}}</h2></div></div></div>
+</div>
+
+<!-- YEAR CALENDAR -->
+<div class="card mt-4">
+  <div class="card-body p-4">
+    <h5 class="mb-4">Year Overview {{ year }}</h5>
+    <div class="row g-3">
+      {% for month in months %}
+      <div class="col-12 col-md-6 col-xl-4">
+        <div class="cal-month p-3 h-100">
+          <h6 class="mb-3">{{ month.name }}</h6>
+          <table class="cal-table w-100 text-center">
+            <thead>
+              <tr>
+                <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for week in month.weeks %}
+              <tr>
+                {% for d in week %}
+                <td>
+                  {% if d.day %}
+                    <span class="cal-day {% if d.holiday %}cal-holiday{% endif %} {% if d.today %}cal-today{% endif %}" {% if d.name %}title="{{ d.name }}"{% endif %}>{{ d.day }}</span>
+                  {% endif %}
+                </td>
+                {% endfor %}
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}
